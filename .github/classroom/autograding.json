@@ -1,0 +1,25 @@
+
+{
+    "tests": [
+      {
+        "name": "Dummy test 1",
+        "setup": "",
+        "run": "echo 'This is the 1st dummy test'",
+        "input": "",
+        "output": "",
+        "comparison": "included",
+        "timeout": 15,
+        "points": 5
+      },
+      {
+        "name": "Dummy test 2",
+        "setup": "",
+        "run": "cat my_test_file.txt",
+        "input": "",
+        "output": "",
+        "comparison": "included",
+        "timeout": 20,
+        "points": 10
+      }
+    ]
+}

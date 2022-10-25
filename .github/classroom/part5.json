@@ -1,0 +1,15 @@
+
+{
+    "tests": [
+      {
+        "name": "Grading not implemented yet",
+        "setup": "",
+        "run": "exit 1",
+        "input": "",
+        "output": "",
+        "comparison": "included",
+        "timeout": 15,
+        "points": 20
+      }
+    ]
+}

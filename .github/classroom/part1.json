@@ -1,0 +1,65 @@
+
+{
+    "tests": [
+      {
+        "name": "Directories happiness_proj and raw exists",
+        "setup": "",
+        "run": "[ -d root/home/ada/happiness_proj && -d root/home/ada/happiness_proj/raw ]",
+        "input": "",
+        "output": "",
+        "comparison": "included",
+        "timeout": 15,
+        "points": 2
+      },
+      {
+        "name": "Directory happiness_proj/raw contains same data as happiness_data",
+        "setup": "",
+        "run": "diff -r root/home/ada/happiness_data root/home/ada/happiness_proj/raw",
+        "input": "",
+        "output": "",
+        "comparison": "included",
+        "timeout": 15,
+        "points": 1
+      },
+      {
+        "name": "preproc_year (with this exact name, no extension) exists and is executable",
+        "setup": "",
+        "run": "[ -x root/home/ada/happiness_proj/preproc_year ]",
+        "input": "",
+        "output": "",
+        "comparison": "included",
+        "timeout": 15,
+        "points": 1
+      },
+      {
+        "name": "IN_DIR exists and path is absolute",
+        "setup": "",
+        "run": "tests/test_part1_indir",
+        "input": "",
+        "output": "",
+        "comparison": "included",
+        "timeout": 15,
+        "points": 1
+      },
+      {
+        "name": "Syntax check with shellcheck",
+        "setup": "",
+        "run": "shellcheck -e SC2034,SC2002 root/home/ada/happiness_proj/preproc_year",
+        "input": "",
+        "output": "",
+        "comparison": "included",
+        "timeout": 15,
+        "points": 2
+      },
+      {
+        "name": "preproc_year output is as expected",
+        "setup": "",
+        "run": "tests/test_part1_output",
+        "input": "",
+        "output": "",
+        "comparison": "included",
+        "timeout": 15,
+        "points": 3
+      }
+    ]
+}

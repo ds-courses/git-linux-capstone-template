@@ -1,0 +1,6 @@
+#!/bin/bash
+
+PROJ_DIR="root/home/ada/happiness_proj"
+INDIR_VAR=$(grep IN_DIR= ${PROJ_DIR}/preproc_year)
+INDIR_PATH=${INDIR_VAR#IN_DIR=}
+[ ${INDIR_PATH:0:1} == "/" ]

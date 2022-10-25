@@ -1,0 +1,118 @@
+name: GitHub Classroom Workflow
+
+on: 
+  push:
+    tags:
+      - v0.*
+
+permissions:
+  checks: write
+  actions: read
+  contents: read
+
+jobs:
+  get-minor-ver:
+    if: ${{ startsWith(github.ref_name, 'v0.') }}
+    runs-on: ubuntu-latest
+    outputs:
+      minor-ver: ${{ steps.get-version.outputs.minor }}
+    steps:
+      - id: get-version
+        uses: battila7/get-version-action@v2
+      - name: Print minor version
+        run: |
+          echo "Minor version: ${{ steps.get-version.outputs.minor }}"
+      - name: Print working directory
+        run: |
+          pwd
+          
+  grade-part-5:
+    if: ${{ needs.get-minor-ver.outputs.minor-ver >= 5 }}
+    needs: [get-minor-ver, grade-part-1, grade-part-2, grade-part-3, grade-part-4]
+    name: Autograding part 5
+    runs-on: ubuntu-latest
+    steps:
+      - uses: oprypin/find-latest-tag@v1
+        with:
+          repository: ${{ github.repository }}
+          prefix: 'v0.5.'
+        id: part5_latest
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ steps.part5_latest.outputs.tag }}
+      - uses: neurorepro/autograding@v2
+        with:
+          test_suite: part5
+
+  grade-part-4:
+    if: ${{ needs.get-minor-ver.outputs.minor-ver >= 4 }}
+    needs: [get-minor-ver, grade-part-1, grade-part-2, grade-part-3]
+    name: Autograding part 4
+    runs-on: ubuntu-latest
+    steps:
+      - uses: oprypin/find-latest-tag@v1
+        with:
+          repository: ${{ github.repository }}
+          prefix: 'v0.4.'
+        id: part4_latest
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ steps.part4_latest.outputs.tag }}
+      - uses: neurorepro/autograding@v2
+        with:
+          test_suite: part4
+
+  grade-part-3:
+    if: ${{ needs.get-minor-ver.outputs.minor-ver >= 3 }}
+    needs: [get-minor-ver, grade-part-1, grade-part-2]
+    name: Autograding part 3
+    runs-on: ubuntu-latest
+    steps:
+      - uses: oprypin/find-latest-tag@v1
+        with:
+          repository: ${{ github.repository }}
+          prefix: 'v0.3.'
+        id: part3_latest
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ steps.part3_latest.outputs.tag }}
+      - uses: neurorepro/autograding@v2
+        with:
+          test_suite: part3
+
+  grade-part-2:
+    if: ${{ needs.get-minor-ver.outputs.minor-ver >= 2 }}
+    needs: [get-minor-ver, grade-part-1]
+    name: Autograding part 2
+    runs-on: ubuntu-latest
+    steps:
+      - uses: oprypin/find-latest-tag@v1
+        with:
+          repository: ${{ github.repository }}
+          prefix: 'v0.2.'
+        id: part2_latest
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ steps.part2_latest.outputs.tag }}
+      - uses: neurorepro/autograding@v2
+        with:
+          test_suite: part2
+  grade-part-1:
+    needs: get-minor-ver
+    name: Autograding
+    runs-on: ubuntu-latest
+    steps:
+      - uses: oprypin/find-latest-tag@v1
+        with:
+          repository: ${{ github.repository }}
+          prefix: 'v0.1.'
+        id: part1_latest
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ steps.part1_latest.outputs.tag }}
+      - uses: neurorepro/autograding@v2
+        with:
+          test_suite: part1
+          # step_summary: true
+          
+      

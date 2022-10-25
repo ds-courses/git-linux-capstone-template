@@ -1,0 +1,30 @@
+#!/bin/bash
+
+SCRIPT="preproc_year"
+PART="part1"
+REF_FILE="ref_output_${PART}_clean.txt"
+PROJ_DIR="root/home/ada/happiness_proj"
+
+# Change original parent directory to Github Action local directory
+TEST_SCRIPT=${SCRIPT}_${PART}_testver
+sed "s|IN_DIR=.*happiness_proj|IN_DIR=$(pwd)\/${PROJ_DIR}|" ${PROJ_DIR}/${SCRIPT} > tests/${TEST_SCRIPT}
+# Run edited script and save output
+chmod u+x tests/${TEST_SCRIPT}
+tests/${TEST_SCRIPT} > tests/output_${PART}.txt
+# Remove comments and reference to local directory
+sed '/^[=#-]/d' < tests/output_${PART}.txt > tests/output_${PART}_nocomments.txt
+sed "s|$(pwd)||" tests/output_${PART}_nocomments.txt > tests/output_${PART}_clean.txt
+# Compare output with reference
+diff tests/output_${PART}_clean.txt tests/${REF_FILE}
+
+# sed -n '1~4p' ${REF_FILE} > ref_fullpaths.txt
+# sed -n '2~4p' ${REF_FILE} > ref_ntimepoints.txt
+# sed -n '3~4p' ${REF_FILE} > ref_filenames.txt
+# sed -n '4~4p' ${REF_FILE} > ref_contcodes.txt
+
+# fileA=$1
+# fileB=$2
+
+# while IFS= read -r lineA && IFS= read -r lineB <&3; do
+#   echo "$lineA"; echo "$lineB"
+# done <ref_output_v1.txt 3<preproc_year_output_clean.txt
