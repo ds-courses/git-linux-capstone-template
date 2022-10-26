@@ -1,4 +1,4 @@
-# Assignment git-linux-capstone
+# Assignment git linux capstone
 
 ## Linux project description
 
